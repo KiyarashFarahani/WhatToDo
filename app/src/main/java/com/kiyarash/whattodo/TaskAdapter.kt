@@ -3,12 +3,11 @@ package com.kiyarash.whattodo
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Adapter
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class ItemAdapter(private val data: List<Task>): RecyclerView.Adapter<ItemAdapter.ViewHolder>(){
+class TaskAdapter(private val data: List<Task>): RecyclerView.Adapter<TaskAdapter.ViewHolder>(){
 	class ViewHolder(private val view: View): RecyclerView.ViewHolder(view) {
 		val taskName: TextView = view.findViewById(R.id.taskNameTextView)
 		val due: TextView = view.findViewById(R.id.dueTextView)

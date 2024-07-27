@@ -26,7 +26,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/materialTextView"
+                    android:id="@+id/taskNameTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/roboto_medium"
@@ -38,12 +38,13 @@
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
+                    android:id="@+id/dueTextView"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     android:textSize="12sp"
                     android:textColor="@color/md_theme_secondary"
-                    app:layout_constraintTop_toBottomOf="@+id/materialTextView"
+                    app:layout_constraintTop_toBottomOf="@+id/taskNameTextView"
                     tools:text="Until: Today 9:41" />
             </LinearLayout>
 
@@ -51,6 +52,7 @@
             <com.google.android.material.checkbox.MaterialCheckBox
                 android:layout_width="60dp"
                 android:layout_height="60dp"
+                android:id="@+id/isDoneCheckBox"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:padding="0dp"

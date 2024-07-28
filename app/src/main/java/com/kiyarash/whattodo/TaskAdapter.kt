@@ -6,9 +6,14 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.timepicker.TimeFormat
+import java.sql.Time
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
-class TaskAdapter(private val data: List<Task>): RecyclerView.Adapter<TaskAdapter.ViewHolder>(){
-	class ViewHolder(private val view: View): RecyclerView.ViewHolder(view) {
+class TaskAdapter(private val data: List<Task>) : RecyclerView.Adapter<TaskAdapter.ViewHolder>() {
+	class ViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
 		val taskName: TextView = view.findViewById(R.id.taskNameTextView)
 		val due: TextView = view.findViewById(R.id.dueTextView)
 		val isDone: CheckBox = view.findViewById(R.id.isDoneCheckBox)
@@ -27,13 +32,29 @@ class TaskAdapter(private val data: List<Task>): RecyclerView.Adapter<TaskAdapte
 	}
 
 	override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-		val	item = data[position]
+		val item = data[position]
 		holder.taskName.text = item.taskName
-		/*holder.due.text = buildString {
-			append(item.dueDate.toString())
-			append(" ")
-			append(item.dueTime.toString())
-		}*/
+
+		if (item.dueDate != null || item.dueTime != null) {
+			holder.due.text = buildString {
+				append("Until ")
+				//append(Date(item.dueDate!!))
+				append(
+					SimpleDateFormat(
+						"E, MMM dd",
+						Locale.getDefault()
+					).format(Date(item.dueDate!!))
+				)
+				append(" ")
+				//append(Time(item.dueTime!!))
+				append(
+					SimpleDateFormat(
+						"hh:mm",
+						Locale.getDefault()
+					).format(Date(item.dueTime!!))
+				)
+			}
+		}
 		holder.isDone.isChecked = item.isDone
 	}
 }

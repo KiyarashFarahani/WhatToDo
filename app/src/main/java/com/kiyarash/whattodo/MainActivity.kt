@@ -8,8 +8,6 @@ import com.kiyarash.whattodo.databinding.ActivityMainBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.sql.Time
-import java.util.Date
 
 class MainActivity : AppCompatActivity() {
 	private var _binding: ActivityMainBinding? = null
@@ -34,15 +32,24 @@ class MainActivity : AppCompatActivity() {
 
 
 
-		lifecycleScope.launch(Dispatchers.IO){
+		lifecycleScope.launch(Dispatchers.IO) {
 			val database = Room.databaseBuilder(
 				applicationContext,
 				AppDatabase::class.java,
-				"tasksTable"
+				"tasks"
 			).build()
-			database.taskDao().insertTask(Task(taskName = "Hello from Room", isDone = true))
+
+			//Test
+			database.taskDao().insertTask(
+				Task(
+					taskName = "Hello from Room",
+					dueDate = 1,
+					dueTime = 1,
+					isDone = true
+				)
+			)
 			val data = database.taskDao().getAll()
-			withContext(Dispatchers.Main){
+			withContext(Dispatchers.Main) {
 				binding.recyclerView.adapter = TaskAdapter(data)
 			}
 		}

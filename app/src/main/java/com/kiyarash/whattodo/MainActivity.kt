@@ -1,5 +1,6 @@
 package com.kiyarash.whattodo
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -39,7 +40,7 @@ class MainActivity : AppCompatActivity() {
 				"tasks"
 			).build()
 
-			//Test
+			/* Test
 			database.taskDao().insertTask(
 				Task(
 					taskName = "Hello from Room",
@@ -47,7 +48,7 @@ class MainActivity : AppCompatActivity() {
 					dueTime = 1,
 					isDone = true
 				)
-			)
+			)*/
 			val data = database.taskDao().getAll()
 			withContext(Dispatchers.Main) {
 				binding.recyclerView.adapter = TaskAdapter(data)

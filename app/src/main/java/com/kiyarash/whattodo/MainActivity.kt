@@ -23,16 +23,6 @@ class MainActivity : AppCompatActivity() {
 			modalBottomSheet.show(supportFragmentManager, AddTaskFragment.TAG)
 		}
 
-
-		/*binding.recyclerView.adapter = TaskAdapter(
-			listOf(
-				//Task(0, "Title", Date(1234), Time(123), false)
-				Task(0, "Hi", false)
-			)
-		)*/
-
-
-
 		lifecycleScope.launch(Dispatchers.IO) {
 			val database = Room.databaseBuilder(
 				applicationContext,
@@ -40,15 +30,6 @@ class MainActivity : AppCompatActivity() {
 				"tasks"
 			).build()
 
-			/* Test
-			database.taskDao().insertTask(
-				Task(
-					taskName = "Hello from Room",
-					dueDate = 1,
-					dueTime = 1,
-					isDone = true
-				)
-			)*/
 			val data = database.taskDao().getAll()
 			withContext(Dispatchers.Main) {
 				binding.recyclerView.adapter = TaskAdapter(data)

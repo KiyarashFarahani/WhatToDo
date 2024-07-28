@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/md_theme_surfaceDim"
+    android:background="@drawable/rounded_bottom_sheet"
     app:layout_behavior="@string/bottom_sheet_behavior"
     tools:context=".AddTaskFragment">
 
@@ -24,13 +24,13 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textField"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
             android:layout_weight="1"
-            android:hint="Task Name"
+            android:hint="@string/task_name"
             app:layout_constraintTop_toBottomOf="@+id/BottomSheetDragHandleView">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -70,7 +70,7 @@
             android:layout_marginEnd="10dp"
             android:layout_weight="1"
             android:backgroundTint="@color/md_theme_primaryContainer"
-            android:text="Choose Date"
+            android:text="@string/choose_date"
             android:textColor="@color/md_theme_primary"
             app:layout_constraintStart_toEndOf="@+id/materialTextView2" />
 
@@ -82,7 +82,7 @@
             android:layout_marginEnd="14dp"
             android:layout_weight="1"
             android:backgroundTint="@color/md_theme_primaryContainer"
-            android:text="Choose Time"
+            android:text="@string/choose_time"
             android:textColor="@color/md_theme_primary"
             app:layout_constraintStart_toEndOf="@+id/materialTextView2" />
 

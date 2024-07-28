@@ -2,7 +2,12 @@ package com.kiyarash.whattodo
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import androidx.room.Room
 import com.kiyarash.whattodo.databinding.ActivityMainBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.sql.Time
 import java.util.Date
 
@@ -14,16 +19,33 @@ class MainActivity : AppCompatActivity() {
 		_binding = ActivityMainBinding.inflate(layoutInflater)
 		setContentView(binding.root)
 
-		binding.recyclerView.adapter = TaskAdapter(
-			listOf(
-				Task(0, "Title", Date(1234), Time(123), false)
-			)
-		)
-
-
 		binding.fabButton.setOnClickListener {
 			val modalBottomSheet = AddTaskFragment()
 			modalBottomSheet.show(supportFragmentManager, AddTaskFragment.TAG)
 		}
+
+
+		/*binding.recyclerView.adapter = TaskAdapter(
+			listOf(
+				//Task(0, "Title", Date(1234), Time(123), false)
+				Task(0, "Hi", false)
+			)
+		)*/
+
+
+
+		lifecycleScope.launch(Dispatchers.IO){
+			val database = Room.databaseBuilder(
+				applicationContext,
+				AppDatabase::class.java,
+				"tasksTable"
+			).build()
+			database.taskDao().insertTask(Task(taskName = "Hello from Room", isDone = true))
+			val data = database.taskDao().getAll()
+			withContext(Dispatchers.Main){
+				binding.recyclerView.adapter = TaskAdapter(data)
+			}
+		}
+
 	}
 }

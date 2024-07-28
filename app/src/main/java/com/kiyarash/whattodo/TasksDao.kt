@@ -3,14 +3,13 @@ package com.kiyarash.whattodo
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import java.util.concurrent.Flow
 
 @Dao
 interface TasksDao {
     @Insert
-    suspend fun insertTask(task: Task)
+    fun insertTask(task: Task)
 
-    @Query("SELECT * FROM Task")
-    suspend fun getAll(): MutableList<Task>
-
-
+	@Query("SELECT * FROM tasksTable")
+	fun getAll(): List<Task>
 }

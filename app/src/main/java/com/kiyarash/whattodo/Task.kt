@@ -7,12 +7,11 @@ import androidx.room.PrimaryKey
 import java.sql.Time
 import java.util.Date
 
-@Entity
+@Entity(tableName = "tasksTable")
 data class Task(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int,
-    @ColumnInfo(name = "task_name") val taskName: String,
-    @ColumnInfo(name = "due_date") val dueDate: Date,
-    @ColumnInfo(name = "due_time") val dueTime: Time,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    @ColumnInfo(name = "task_name") val taskName: String?,
+    //@ColumnInfo(name = "due_date") val dueDate: Date?,
+    //@ColumnInfo(name = "due_time") val dueTime: Time?,
     @ColumnInfo(name = "is_done") val isDone: Boolean
 )

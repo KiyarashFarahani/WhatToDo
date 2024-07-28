@@ -29,11 +29,11 @@ class TaskAdapter(private val data: List<Task>): RecyclerView.Adapter<TaskAdapte
 	override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 		val	item = data[position]
 		holder.taskName.text = item.taskName
-		holder.due.text = buildString {
+		/*holder.due.text = buildString {
 			append(item.dueDate.toString())
 			append(" ")
 			append(item.dueTime.toString())
-		}
+		}*/
 		holder.isDone.isChecked = item.isDone
 	}
 }

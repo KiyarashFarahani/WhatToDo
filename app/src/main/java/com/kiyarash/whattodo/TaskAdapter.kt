@@ -13,6 +13,8 @@ import java.util.Locale
 class TaskAdapter(
 	private val data: List<Task>, private val buttonClickListener: OnButtonClickListener
 ) : RecyclerView.Adapter<TaskAdapter.ViewHolder>() {
+	private val oneWeekInMillis = (7 * 24 * 60 * 60 * 1000L)
+
 	interface OnButtonClickListener {
 		fun onButtonClick(holder: ViewHolder, position: Int)
 	}
@@ -40,23 +42,30 @@ class TaskAdapter(
 		holder.taskName.text = item.taskName
 
 		if (item.dueDate != null || item.dueTime != null) {
+			var text = ""
+
+			var dateFormat: String? = null
+			if (item.dueDate != null) {
+				if (item.dueDate - (System.currentTimeMillis()) <= oneWeekInMillis)
+					dateFormat = "E"
+				else
+					dateFormat = "E, MMM dd"
+				text += SimpleDateFormat(
+					dateFormat,
+					Locale.getDefault()
+				).format(Date(item.dueDate))
+			}
+
+			if (item.dueTime != null) {
+				if (text != "")
+					text += " "
+				text += SimpleDateFormat(
+					"hh:mm a",
+					Locale.getDefault()
+				).format(Date(item.dueTime))
+			}
 			holder.due.text = buildString {
-				append("Until ")
-				//append(Date(item.dueDate!!))
-				append(
-					SimpleDateFormat(
-						"E, MMM dd",
-						Locale.getDefault()
-					).format(Date(item.dueDate!!))
-				)
-				append(" ")
-				//append(Time(item.dueTime!!))
-				append(
-					SimpleDateFormat(
-						"hh:mm",
-						Locale.getDefault()
-					).format(Date(item.dueTime!!))
-				)
+				append(text)
 			}
 		}
 		holder.isDone.isChecked = item.isDone

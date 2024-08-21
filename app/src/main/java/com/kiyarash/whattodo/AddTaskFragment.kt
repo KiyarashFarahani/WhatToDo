@@ -47,24 +47,22 @@ class AddTaskFragment : BottomSheetDialogFragment() {
 	}
 
 	private fun openTimePicker() {
-		// Get current time
 		val calendar = Calendar.getInstance()
 		val hour = calendar.get(Calendar.HOUR_OF_DAY)
 		val minute = calendar.get(Calendar.MINUTE)
 
-		// Create TimePickerDialog
 		val timePickerDialog = TimePickerDialog(
 			requireContext(),
 			{ _, selectedHour, selectedMinute ->
-				// Handle time selection
-				binding.timeButton.text =
+				calendar.set(Calendar.HOUR_OF_DAY, selectedHour)
+				calendar.set(Calendar.MINUTE, selectedMinute)
+				val selectedTime =
 					String.format(Locale.getDefault(), "%02d:%02d", selectedHour, selectedMinute)
+				binding.timeButton.text = selectedTime
 				dueTime = calendar.timeInMillis
 			},
 			hour, minute, true
 		)
-
-		// Show TimePickerDialog
 		timePickerDialog.show()
 	}
 
@@ -81,8 +79,11 @@ class AddTaskFragment : BottomSheetDialogFragment() {
 				/*Toast.makeText(
 					requireContext(), "Selected Date: $selectedDate", Toast.LENGTH_SHORT
 				).show()*/
-				dueDate = calendar.timeInMillis
+				calendar.set(Calendar.YEAR, selectedYear)
+				calendar.set(Calendar.MONTH, selectedMonth)
+				calendar.set(Calendar.DAY_OF_MONTH, selectedDay)
 				binding.dateButton.text = selectedDate
+				dueDate = calendar.timeInMillis
 			},
 			year, month, day
 		)

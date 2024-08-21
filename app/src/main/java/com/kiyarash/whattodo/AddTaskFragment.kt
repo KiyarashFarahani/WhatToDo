@@ -14,10 +14,7 @@ import kotlinx.coroutines.launch
 class AddTaskFragment : BottomSheetDialogFragment() {
 	private var _binding: FragmentAddTaskBinding? = null
 	private val binding get() = _binding!!
-
 	private lateinit var viewModel: TaskViewModel
-
-
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
@@ -30,21 +27,6 @@ class AddTaskFragment : BottomSheetDialogFragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 		binding.checkButton.setOnClickListener {
-			//lifecycleScope.launch(Dispatchers.IO) {
-				/*val database = Room.databaseBuilder(
-					requireContext(),
-					AppDatabase::class.java,
-					"tasks"
-				).build()
-
-				database.taskDao().insertTask(
-					Task(
-						taskName = binding.textInput.text.toString(),
-						dueDate = null,
-						dueTime = null,
-						isDone = false
-					)
-				)*/
 				viewModel.sharedData.value = Task(
 					taskName = binding.textInput.text.toString(),
 					dueDate = null,
@@ -52,7 +34,6 @@ class AddTaskFragment : BottomSheetDialogFragment() {
 					isDone = false
 				)
 				requireDialog().dismiss()
-			//}
 		}
 	}
 

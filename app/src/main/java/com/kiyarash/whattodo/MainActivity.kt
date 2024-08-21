@@ -1,6 +1,7 @@
 package com.kiyarash.whattodo
 
 import android.os.Bundle
+import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -21,6 +22,9 @@ class MainActivity : AppCompatActivity(), TaskAdapter.OnButtonClickListener {
 		getDatabaseInstance()
 		_binding = ActivityMainBinding.inflate(layoutInflater)
 		setContentView(binding.root)
+		val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
+		setSupportActionBar(toolbar)
+		supportActionBar?.title = "What To Do"
 		taskViewModel = ViewModelProvider(this)[TaskViewModel::class.java]
 		binding.fabButton.setOnClickListener {
 			val modalBottomSheet = AddTaskFragment()

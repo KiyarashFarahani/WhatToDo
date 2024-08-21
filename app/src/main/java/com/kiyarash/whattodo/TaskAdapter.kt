@@ -68,6 +68,9 @@ class TaskAdapter(
 				append(text)
 			}
 		}
+		else {
+			holder.due.visibility = View.GONE
+		}
 		holder.isDone.isChecked = item.isDone
 		holder.isDone.setOnClickListener {
 			buttonClickListener.onButtonClick(holder, position)

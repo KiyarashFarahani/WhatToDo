@@ -10,7 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), TaskAdapter.OnButtonClickListener {
 	private lateinit var taskViewModel: TaskViewModel
 	private lateinit var database: AppDatabase
 
@@ -35,13 +35,14 @@ class MainActivity : AppCompatActivity() {
 				}
 			}
 		}
+
 	}
 
 	private fun updateRecyclerView() {
 		lifecycleScope.launch(Dispatchers.IO) {
 			val data = database.taskDao().getAll()
 			withContext(Dispatchers.Main) {
-				binding.recyclerView.adapter = TaskAdapter(data)
+				binding.recyclerView.adapter = TaskAdapter(data,this@MainActivity)
 			}
 		}
 	}
@@ -53,6 +54,15 @@ class MainActivity : AppCompatActivity() {
 				AppDatabase::class.java,
 				"tasks"
 			).build()
+		}
+	}
+
+	override fun onButtonClick(holder: TaskAdapter.ViewHolder, position: Int) {
+		if (holder.isDone.isChecked){
+			lifecycleScope.launch(Dispatchers.IO) {
+				database.taskDao().deleteTaskById(database.taskDao().getAll()[position].id)
+				updateRecyclerView()
+			}
 		}
 	}
 }

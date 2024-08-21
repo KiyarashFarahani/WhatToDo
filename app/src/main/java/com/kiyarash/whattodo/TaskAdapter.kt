@@ -6,13 +6,17 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.timepicker.TimeFormat
-import java.sql.Time
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class TaskAdapter(private val data: List<Task>) : RecyclerView.Adapter<TaskAdapter.ViewHolder>() {
+class TaskAdapter(
+	private val data: List<Task>, private val buttonClickListener: OnButtonClickListener
+) : RecyclerView.Adapter<TaskAdapter.ViewHolder>() {
+	interface OnButtonClickListener {
+		fun onButtonClick(holder: ViewHolder, position: Int)
+	}
+
 	class ViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
 		val taskName: TextView = view.findViewById(R.id.taskNameTextView)
 		val due: TextView = view.findViewById(R.id.dueTextView)
@@ -56,5 +60,8 @@ class TaskAdapter(private val data: List<Task>) : RecyclerView.Adapter<TaskAdapt
 			}
 		}
 		holder.isDone.isChecked = item.isDone
+		holder.isDone.setOnClickListener {
+			buttonClickListener.onButtonClick(holder, position)
+		}
 	}
 }

@@ -1,7 +1,6 @@
 package com.kiyarash.whattodo
 
 import android.os.Bundle
-import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -32,12 +31,14 @@ class MainActivity : AppCompatActivity(), TaskAdapter.OnButtonClickListener {
 		}
 		updateRecyclerView()
 		taskViewModel.sharedData.observe(this) { data ->
-			lifecycleScope.launch(Dispatchers.IO) {
-				database.taskDao().insertTask(data)
-				withContext(Dispatchers.Main) {
-					updateRecyclerView()
+			if (data != null)
+				lifecycleScope.launch(Dispatchers.IO) {
+					database.taskDao().insertTask(data)
+					withContext(Dispatchers.Main) {
+						taskViewModel.sharedData.value = null
+						updateRecyclerView()
+					}
 				}
-			}
 		}
 
 	}
@@ -46,7 +47,7 @@ class MainActivity : AppCompatActivity(), TaskAdapter.OnButtonClickListener {
 		lifecycleScope.launch(Dispatchers.IO) {
 			val data = database.taskDao().getAll()
 			withContext(Dispatchers.Main) {
-				binding.recyclerView.adapter = TaskAdapter(data,this@MainActivity)
+				binding.recyclerView.adapter = TaskAdapter(data, this@MainActivity)
 			}
 		}
 	}
@@ -62,7 +63,7 @@ class MainActivity : AppCompatActivity(), TaskAdapter.OnButtonClickListener {
 	}
 
 	override fun onButtonClick(holder: TaskAdapter.ViewHolder, position: Int) {
-		if (holder.isDone.isChecked){
+		if (holder.isDone.isChecked) {
 			lifecycleScope.launch(Dispatchers.IO) {
 				database.taskDao().deleteTaskById(database.taskDao().getAll()[position].id)
 				updateRecyclerView()

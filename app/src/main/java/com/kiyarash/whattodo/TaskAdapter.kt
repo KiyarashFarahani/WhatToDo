@@ -46,7 +46,8 @@ class TaskAdapter(
 
 			var dateFormat: String? = null
 			if (item.dueDate != null) {
-				if (item.dueDate - (System.currentTimeMillis()) <= oneWeekInMillis)
+				val duration = item.dueDate - (System.currentTimeMillis())
+				if (duration in 0..oneWeekInMillis)
 					dateFormat = "E"
 				else
 					dateFormat = "E, MMM dd"

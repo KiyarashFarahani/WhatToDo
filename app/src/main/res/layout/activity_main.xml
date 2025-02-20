@@ -23,6 +23,7 @@
             android:elevation="4dp"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
     </com.google.android.material.appbar.AppBarLayout>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -43,10 +44,7 @@
         tools:listitem="@layout/item_view">
 
 
-
     </androidx.recyclerview.widget.RecyclerView>
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

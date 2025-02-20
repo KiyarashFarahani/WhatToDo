@@ -11,7 +11,7 @@ import java.util.Date
 import java.util.Locale
 
 class TaskAdapter(
-	private val data: List<Task>, private val buttonClickListener: OnButtonClickListener
+	private val data: MutableList<Task>, private val buttonClickListener: OnButtonClickListener
 ) : RecyclerView.Adapter<TaskAdapter.ViewHolder>() {
 	private val oneWeekInMillis = (7 * 24 * 60 * 60 * 1000L)
 
@@ -36,6 +36,7 @@ class TaskAdapter(
 	override fun getItemCount(): Int {
 		return data.size
 	}
+
 
 	override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 		val item = data[position]
@@ -68,13 +69,21 @@ class TaskAdapter(
 			holder.due.text = buildString {
 				append(text)
 			}
-		}
-		else {
+		} else {
 			holder.due.visibility = View.GONE
 		}
 		holder.isDone.isChecked = item.isDone
 		holder.isDone.setOnClickListener {
 			buttonClickListener.onButtonClick(holder, position)
+			notifyItemRemoved(position)
 		}
 	}
+
+	fun getTask(position: Int): Task = data[position]
+
+	fun removeTask(position: Int) {
+		data.removeAt(position)
+		notifyItemRemoved(position)
+	}
+
 }

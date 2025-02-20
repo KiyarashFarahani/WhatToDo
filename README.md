@@ -1,2 +1,1 @@
 # Simple Android ToDo app 🚀
-

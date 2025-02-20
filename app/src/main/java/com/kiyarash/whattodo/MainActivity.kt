@@ -1,9 +1,12 @@
 package com.kiyarash.whattodo
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.kiyarash.whattodo.databinding.ActivityMainBinding
 import kotlinx.coroutines.Dispatchers
@@ -48,6 +51,23 @@ class MainActivity : AppCompatActivity(), TaskAdapter.OnButtonClickListener {
 			val data = database.taskDao().getAll()
 			withContext(Dispatchers.Main) {
 				binding.recyclerView.adapter = TaskAdapter(data, this@MainActivity)
+
+				val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+					override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder) = false
+
+					override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+						//val position = viewHolder.adapterPosition
+						val adapter = binding.recyclerView.adapter as TaskAdapter
+						val position = viewHolder.adapterPosition
+						val task = adapter.getTask(position)
+
+						lifecycleScope.launch(Dispatchers.IO) {
+							database.taskDao().deleteTaskById(task.id)
+						}
+						adapter.removeTask(position)
+					}
+				})
+				itemTouchHelper.attachToRecyclerView(binding.recyclerView)
 			}
 		}
 	}

@@ -3,13 +3,16 @@ package com.kiyarash.whattodo
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.kiyarash.whattodo.databinding.FragmentAddTaskBinding
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 
 class AddTaskFragment : BottomSheetDialogFragment() {
@@ -37,6 +40,31 @@ class AddTaskFragment : BottomSheetDialogFragment() {
 				isDone = false
 			)
 			requireDialog().dismiss()
+		}
+
+		viewModel.sharedData.observe(viewLifecycleOwner) { task ->
+			if (task != null) {
+				binding.textInput.setText(task.taskName)
+
+				if(task.dueTime != null){
+					binding.timeButton.text = SimpleDateFormat(
+						"hh:mm a",
+						Locale.getDefault()
+					).format(Date(task.dueTime))
+				}
+
+				if(task.dueDate != null) {
+					val dateFormat: String?
+					val oneWeekInMillis = (7 * 24 * 60 * 60 * 1000L)
+					val duration = task.dueDate - System.currentTimeMillis()
+					if (duration in 0..oneWeekInMillis) dateFormat = "E"
+					else dateFormat = "E, MMM dd"
+					binding.dateButton.text = SimpleDateFormat(
+						dateFormat,
+						Locale.getDefault()
+					).format(Date(task.dueDate))
+				}
+			}
 		}
 		binding.dateButton.setOnClickListener {
 			openDatePicker()
@@ -76,9 +104,6 @@ class AddTaskFragment : BottomSheetDialogFragment() {
 			requireContext(),
 			{ _, selectedYear, selectedMonth, selectedDay ->
 				val selectedDate = "${selectedDay}/${selectedMonth + 1}/$selectedYear"
-				/*Toast.makeText(
-					requireContext(), "Selected Date: $selectedDate", Toast.LENGTH_SHORT
-				).show()*/
 				calendar.set(Calendar.YEAR, selectedYear)
 				calendar.set(Calendar.MONTH, selectedMonth)
 				calendar.set(Calendar.DAY_OF_MONTH, selectedDay)
@@ -89,7 +114,11 @@ class AddTaskFragment : BottomSheetDialogFragment() {
 		)
 		datePickerDialog.show()
 	}
-
+	override fun onDestroyView() {
+		super.onDestroyView()
+		viewModel.sharedData.value = null
+		_binding = null
+	}
 	companion object {
 		const val TAG = "BottomSheet"
 	}

@@ -37,7 +37,6 @@ class MainActivity : AppCompatActivity(), TaskAdapter.OnButtonClickListener {
                 lifecycleScope.launch(Dispatchers.IO) {
                     database.taskDao().insertTask(data)
                     withContext(Dispatchers.Main) {
-                        taskViewModel.sharedData.value = null
                         updateRecyclerView()
                     }
                 }
@@ -49,7 +48,12 @@ class MainActivity : AppCompatActivity(), TaskAdapter.OnButtonClickListener {
         lifecycleScope.launch(Dispatchers.IO) {
             val data = database.taskDao().getAll()
             withContext(Dispatchers.Main) {
-                binding.recyclerView.adapter = TaskAdapter(data, this@MainActivity)
+                binding.recyclerView.adapter =
+                    TaskAdapter(data, this@MainActivity) { selectedTask ->
+                        taskViewModel.sharedData.value = selectedTask
+                        val modalBottomSheet = AddTaskFragment()
+                        modalBottomSheet.show(supportFragmentManager, AddTaskFragment.TAG)
+                    }
 
                 val itemTouchHelper = ItemTouchHelper(object :
                     ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT) {

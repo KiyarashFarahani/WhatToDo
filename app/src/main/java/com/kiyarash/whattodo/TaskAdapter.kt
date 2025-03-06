@@ -86,9 +86,4 @@ class TaskAdapter(
 
 	fun getTask(position: Int): Task = data[position]
 
-	fun removeTask(position: Int) {
-		data.removeAt(position)
-		notifyItemRemoved(position)
-	}
-
 }

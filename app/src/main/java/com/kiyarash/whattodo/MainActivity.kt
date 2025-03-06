@@ -64,15 +64,16 @@ class MainActivity : AppCompatActivity(), TaskAdapter.OnButtonClickListener {
                     ) = false
 
                     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                        //val position = viewHolder.adapterPosition
                         val adapter = binding.recyclerView.adapter as TaskAdapter
                         val position = viewHolder.adapterPosition
                         val task = adapter.getTask(position)
 
                         lifecycleScope.launch(Dispatchers.IO) {
                             database.taskDao().deleteTaskById(task.id)
+                            withContext(Dispatchers.Main) {
+                                updateRecyclerView()
+                            }
                         }
-                        adapter.removeTask(position)
                     }
                 })
                 itemTouchHelper.attachToRecyclerView(binding.recyclerView)

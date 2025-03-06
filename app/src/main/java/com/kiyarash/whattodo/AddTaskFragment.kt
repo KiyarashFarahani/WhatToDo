@@ -33,12 +33,21 @@ class AddTaskFragment : BottomSheetDialogFragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 		binding.checkButton.setOnClickListener {
-			viewModel.sharedData.value = Task(
-				taskName = binding.textInput.text.toString(),
-				dueDate = dueDate,
-				dueTime = dueTime,
-				isDone = false
-			)
+			if(viewModel.sharedData.value == null)
+				viewModel.sharedData.value = Task(
+					taskName = binding.textInput.text.toString(),
+					dueDate = dueDate,
+					dueTime = dueTime,
+					isDone = false
+				)
+			else
+				viewModel.sharedData.value = Task(
+					viewModel.sharedData.value!!.id,
+					taskName = binding.textInput.text.toString(),
+					dueDate = dueDate,
+					dueTime = dueTime,
+					isDone = false
+				)
 			requireDialog().dismiss()
 		}
 
@@ -47,6 +56,7 @@ class AddTaskFragment : BottomSheetDialogFragment() {
 				binding.textInput.setText(task.taskName)
 
 				if(task.dueTime != null){
+					dueTime = task.dueTime
 					binding.timeButton.text = SimpleDateFormat(
 						"hh:mm a",
 						Locale.getDefault()
@@ -54,6 +64,7 @@ class AddTaskFragment : BottomSheetDialogFragment() {
 				}
 
 				if(task.dueDate != null) {
+					dueDate = task.dueDate
 					val dateFormat: String?
 					val oneWeekInMillis = (7 * 24 * 60 * 60 * 1000L)
 					val duration = task.dueDate - System.currentTimeMillis()

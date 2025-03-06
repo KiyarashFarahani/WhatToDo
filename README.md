@@ -1,7 +1,7 @@
 # Simple Android ToDo app 🚀 (In Development)
 
 ## Todo
-- [ ] editing tasks duplicates them
+- [X] editing tasks duplicates them
 - [ ] deleting the task before the last one causes crash when trying to open the last task
 - [ ] add widgets
 - [ ] fix keyboard position in bottom sheet

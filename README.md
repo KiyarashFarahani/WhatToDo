@@ -40,7 +40,7 @@ WhatToDo is a clean and intuitive task management app that helps users organize 
 #### Installation
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/WhatToDo.git
+   git clone https://github.com/KiyarashFarahani/WhatToDo.git
    ```
 
 2. Open the project in Android Studio
